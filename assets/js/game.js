@@ -29,14 +29,15 @@ while (enemyHealth > 0 && playerHealth > 0){
       var confirmSkip = window.confirm("Are you sure you'd like to quit?");
         if (confirmSkip){
           window.alert(playerName + " has decided to skip this fight. Goodbye!");
-          playerMoney = playerMoney - 10;
+          playerMoney = Math.max(0, playerMoney - 10);
           console.log("playerMoney" , playerMoney)
           break;
         }
     }
   //If player doesn't skip, DEFAULT to fight
   //player attacks, calculate enemy health  
-      enemyHealth = enemyHealth - playerAttack;
+  var damage = randomNumber(playerAttack - 3, playerAttack);    
+  enemyHealth = Math.max(0, enemyHealth - damage);
       console.log(playerName + " attacked " + enemyName + " . " + enemyName + " has " + enemyHealth + " remaining." );
       //if enemy dies, alert player, award money, and leave loop
       if (enemyHealth <= 0) {
@@ -48,7 +49,8 @@ while (enemyHealth > 0 && playerHealth > 0){
       else {
         window.alert(enemyName + " still has " + enemyHealth + " health remaining.")
       }
-        playerHealth = playerHealth - enemyAttack;
+      var damage = randomNumber(enemyAttack - 3, enemyAttack);  
+      playerHealth = Math.max(0, playerHealth - damage);
         console.log(enemyName + " attacked! " + playerName + " now has " + playerHealth + " health remaining.");
         //if player dies, leave loop 
         if (playerHealth <= 0) {
@@ -78,7 +80,7 @@ for (var i = 0; i < enemyNames.length; i++) {
     window.alert("Welcome to Robot Gladiators! Round " + (i + 1));
   
       var pickedEnemyName = enemyNames[i];
-      enemyHealth = 50;
+      enemyHealth = randomNumber(40, 60);
 
     fight(pickedEnemyName);
     if ( i < enemyNames.length -1 && playerHealth > 0){
@@ -149,6 +151,10 @@ var shop = function (){
   window.alert("You are now leaving the store. " + playerName + " currently  has " + playerHealth + " health points, " + playerAttack + " attack points, and " +  playerMoney + " dollars.");
 }
 
+var randomNumber= function (min, max){
+  var value = Math.floor(Math.random() * (max-min +1) + min);
 
+  return value;
+};
 //start the game when the page loads
 startGame();
